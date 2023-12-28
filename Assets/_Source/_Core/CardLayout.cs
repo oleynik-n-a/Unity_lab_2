@@ -4,6 +4,7 @@ namespace _Source._Core
 {
     public class CardLayout : MonoBehaviour
     {
+        public bool FaceUp;
         public int LayoutID;
         public Vector2 Offset;
     

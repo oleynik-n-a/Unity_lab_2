@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _Source._Core
 {
@@ -6,6 +7,6 @@ namespace _Source._Core
     {
         private string _cardName;
         private Color _cardColor;
-        private string _cardImage;
+        private Image _cardImage;
     }
 }
