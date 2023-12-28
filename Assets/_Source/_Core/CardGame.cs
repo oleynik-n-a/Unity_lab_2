@@ -6,27 +6,17 @@ namespace _Source._Core
 {
     public class CardGame : MonoBehaviour
     {
-        private Dictionary<CardInstance, CardView> _dict;
         private static CardGame _instance;
+        public Dictionary<CardInstance, CardView> Dict;
         public GameObject Prefab;
         public List<CardAsset> StartCardAssets;
 
         CardGame()
         {
-            _dict = new Dictionary<CardInstance, CardView>();
+            Dict = new Dictionary<CardInstance, CardView>();
         }
 
-        public static CardGame Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    return new CardGame();
-
-                return _instance;
-            }
-            private set { _instance = value; }
-        }
+        public static CardGame Instance { get; private set; }
         
         private void Awake() 
         {
@@ -34,7 +24,7 @@ namespace _Source._Core
             { 
                 Destroy(this); 
             } 
-            else 
+            else
             { 
                 Instance = this; 
             } 
@@ -42,20 +32,17 @@ namespace _Source._Core
         
         public void StartGame()
         {
-            foreach (var cardAsset in StartCardAssets)
+            foreach (var instance in StartCardAssets)
             {
-                CardInstance cardInstance = new CardInstance(cardAsset);
-            }
-            {
-                
+                CreateCard(instance, 0);
             }
         }
 
         private void CreateCardView(CardInstance instance)
         {
             GameObject obj = Instantiate(Prefab);
-            _dict[instance] = obj.GetComponent<CardView>();
-            _dict[instance].Init(instance);
+            Dict[instance] = obj.GetComponent<CardView>();
+            Dict[instance].Init(instance);
         }
 
         private void CreateCard(CardAsset asset, int layout)
@@ -64,5 +51,19 @@ namespace _Source._Core
             CreateCardView(cardInstance);
             cardInstance.MoveToLayout(layout);
         }
+
+        public List<CardInstance> GetCardsInLayout(int layoutID)
+        {
+            List<CardInstance> instances = new List<CardInstance>();
+            foreach (var instance in Instance.Dict.Keys) 
+            {
+                if (instance.LayoutId == layoutID)
+                {
+                    instances.Add(instance);
+                }
+            }
+
+            return instances;
+        } 
     }
 }
